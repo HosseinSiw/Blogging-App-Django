@@ -1,13 +1,21 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="{% static 'users/css/login.css' %}">
 </head>
 <body>
-    <h1>Login</h1>
-                                {% csrf_token %}
-{{ form.as_p }}
-
+    <div class="login-page">
+  <div class="form">
+    <form class="register-form" method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <button type="submit">Login</button>
+        <p class="message">Not registered? <a href="{% url 'users:signup' %}">Create an account</a></p>
+    </form>
+  </div>
+</div>
 </body>
 </html>
