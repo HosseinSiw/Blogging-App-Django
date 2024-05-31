@@ -15,7 +15,6 @@ def signup_view(request):
             return redirect(to="home:home")
         else:
             messages.error(request, 'Please correct the error below.')
-
     else:
         form = UserCreationForm()
 
@@ -30,16 +29,28 @@ def login_view(request):
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
-                login(request, user=user)
-                return redirect(to='users:signup')
+                login(request, user)
+                return redirect('home:home')  # Adjust the redirect URL as needed
             else:
-                messages.error(request, f"{username} isn't a valid one")
+                form.add_error(None, "Invalid username or password.")
+                return redirect('users:signup')
         else:
-            messages.error(request, 'Please correct the error below.')
-    elif request.method == "GET":
+            messages.error(request, 'Please correct the error below.')  # Form-level error for invalid form
+    else:
         form = UserLoginForm()
-        return render(request, template_name='users/login.html', context={'form': form, "title": "Login"})
+    return render(request, 'users/login.html', {'form': form, 'title': 'Login'})
 
 
 def logout_view(request):
-    pass
+    try:
+        # Log out the user
+        logout(request)
+
+        # Add a success message
+        messages.success(request, 'You have been successfully logged out.')
+    except Exception as e:
+        # Handle any unexpected errors during logout
+        messages.error(request, f'An error occurred: {str(e)}')
+
+    # Redirect the user to the home page
+    return redirect('home:home')

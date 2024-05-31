@@ -3,19 +3,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{{ title }}</title>
     <link rel="stylesheet" href="{% static 'users/css/login.css' %}">
 </head>
 <body>
-    <div class="login-page">
-  <div class="form">
-    <form class="register-form" method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <button type="submit">Login</button>
-        <p class="message">Not registered? <a href="{% url 'users:signup' %}">Create an account</a></p>
-    </form>
-  </div>
-</div>
+     <div class="container">
+      <div class="card">
+        <div class="card_title">
+          <h1>Login to your account</h1>
+          <span>Dont have an account? <a href="{% url 'users:signup' %}">Sign In</a></span>
+        </div>
+        <div class="form">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Sign Up</button>
+        </form>
+        </div>
+      </div>
+    </div>
 </body>
 </html>
