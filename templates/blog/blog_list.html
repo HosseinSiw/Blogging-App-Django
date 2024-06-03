@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Blog List</title>
+    <link rel="stylesheet" href="{% static 'blog/css/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>My Simple Blog</h1>
+    </header>
+
+    <section>
+        <h2>Latest Posts</h2>
+    <a href="{% url 'home:home' %}">Main</a>
+        <article>
+            {% for post in blogs %}
+            	<h3><a href="#">{{ post.title }}</a></h3>
+                <p>{{ post.content }}</p>
+                <p>{{ post.published_date }}</p>
+                <p><b>{{ post.author.username }}</b></p>
+                <img src="{{ post.image.url }}" />
+                <p>{{ post.likes }}</p>
+                <tag> {{ post.tag.name }}</tag>
+                <button type="button"> LIKE {{ post.add_likes }} </button>
+            {% endfor %}
+
+
+        </article>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 My Simple Blog. All rights reserved.</p>
+    </footer>
+</body>
+</html>

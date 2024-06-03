@@ -12,7 +12,7 @@ def signup_view(request):
             form.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f'Account created for {username}!')
-            return redirect(to="home:home")
+            return redirect(to="users:login")
         else:
             messages.error(request, 'Please correct the error below.')
     else:
@@ -23,17 +23,27 @@ def signup_view(request):
 
 def login_view(request):
     if request.method == 'POST':
+        print(request.POST)
         form = UserLoginForm(request.POST)
+        print(f"Username: \t {form.cleaned_data.get('username')}")
+        print(f"Password: \t {form.cleaned_data.get('password')}")
         if form.is_valid():
             username = form.cleaned_data.get('username')
+            print(f"Username: \t {form.cleaned_data.get("username")}")
+            print(f"Password: \t {form.cleaned_data.get('password')}")
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
+            print(user)
             if user is not None:
+                print(user, "IS NOT NONE")
                 login(request, user)
                 return redirect('home:home')  # Adjust the redirect URL as needed
             else:
+                print(user, "IS NONE")
+
                 form.add_error(None, "Invalid username or password.")
                 return redirect('users:signup')
+
         else:
             messages.error(request, 'Please correct the error below.')  # Form-level error for invalid form
     else:
