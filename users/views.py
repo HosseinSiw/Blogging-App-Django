@@ -1,66 +1,49 @@
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
+from .forms import UserRegisterForm, UserLoginForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from .forms import UserLoginForm
 
 
 def signup_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}!')
-            return redirect(to="users:login")
-        else:
-            messages.error(request, 'Please correct the error below.')
+            messages.success(request, f'Your account has been created ! You are now able to log in')
+            return redirect('users:login')
     else:
-        form = UserCreationForm()
-
-    return render(request, template_name='users/signup.html', context={'form': form, "title": "Sign Up"})
+        form = UserRegisterForm()
+        return render(request, 'users/signup.html', {'form': form})
 
 
 def login_view(request):
     if request.method == 'POST':
-        print(request.POST)
         form = UserLoginForm(request.POST)
-        print(f"Username: \t {form.cleaned_data.get('username')}")
-        print(f"Password: \t {form.cleaned_data.get('password')}")
         if form.is_valid():
             username = form.cleaned_data.get('username')
-            print(f"Username: \t {form.cleaned_data.get("username")}")
-            print(f"Password: \t {form.cleaned_data.get('password')}")
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
-            print(user)
             if user is not None:
-                print(user, "IS NOT NONE")
                 login(request, user)
-                return redirect('home:home')  # Adjust the redirect URL as needed
+                messages.success(request, f'welcome{username}')
+                return redirect('home:home')
             else:
-                print(user, "IS NONE")
-
-                form.add_error(None, "Invalid username or password.")
                 return redirect('users:signup')
-
         else:
-            messages.error(request, 'Please correct the error below.')  # Form-level error for invalid form
+            return HttpResponse(str(form.errors))
     else:
         form = UserLoginForm()
-    return render(request, 'users/login.html', {'form': form, 'title': 'Login'})
+        return render(request, 'users/login.html', {'form': form})
 
 
+@login_required
 def logout_view(request):
-    try:
-        # Log out the user
+    if request.user.is_anonymous:
+        messages.success(request, 'You are not logged in')
+        return redirect('home:home')
+    else:
         logout(request)
-
-        # Add a success message
-        messages.success(request, 'You have been successfully logged out.')
-    except Exception as e:
-        # Handle any unexpected errors during logout
-        messages.error(request, f'An error occurred: {str(e)}')
-
-    # Redirect the user to the home page
-    return redirect('home:home')
+        messages.success(request, 'You are now logged out')
+        return redirect('home:home')

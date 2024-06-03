@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Blog, Tag
+from .models import Blog, Tag, Contact
 
 
 class BlogAdmin(admin.ModelAdmin):
@@ -11,6 +11,12 @@ class TagAdmin(admin.ModelAdmin):
     list_display = ('name',)
 
 
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email')
+    list_filter = ('name',)
+
+
 admin.site.register(Blog, BlogAdmin)
 admin.site.register(Tag, TagAdmin)
+admin.site.register(Contact)
 # Register your models here.
