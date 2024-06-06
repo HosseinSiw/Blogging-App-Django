@@ -3,7 +3,7 @@ from .models import Blog, Tag, Contact
 
 
 class BlogAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'pub_date', 'tag')
+    list_display = ('title', 'author', 'pub_date')
     list_filter = ('likes',)
 
 
@@ -19,4 +19,3 @@ class ContactAdmin(admin.ModelAdmin):
 admin.site.register(Blog, BlogAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Contact)
-# Register your models here.

@@ -135,30 +135,39 @@
                                     {% for blog in blogs %}
                                     <article class="blog-card">
                                         <div class="blog-img-container">
-                                            <a href="#"><img src="" class="blog-img" alt="404" /></a>
+                                            {% if blog.image %}
+                                                <a href="{% url 'blog:blog-details' blog.id  %}"><img src="{{ blog.image.url }}" class="blog-img" alt="404" /></a>
+                                            {% else %}
+                                                <a href="{% url 'blog:blog-details' blog.id  %}"><img src="" class="blog-img" alt="404" /></a>
+
+                                            {% endif %}
+
                                             <p class="blog-date">{{ blog.pub_date }}</p>
                                         </div>
                                         <!-- blog info -->
                                         <div class="blog-info">
                                             <div class="blog-title">
-                                                <a href="#">
+                                                <a href="{% url 'blog:blog-details' blog.id %}">
                                                     <h4>{{ blog.title }}</h4>
                                                 </a>
-                                                <a href="#">
-                                                    <p>{{ post.tags }}</p>
+                                                {% for tag in blog.tag.all %}
+                                                    <a href="#">
+                                                    <p>{{ tag }}</p>
                                                 </a>
+                                                {% endfor %}
+
                                             </div>
                                             <p>
                                                 {{ blog.content }}
                                             </p>
                                             <!-- blog footer -->
                                             <div class="blog-footer">
-                                                <a href="">
+                                                <a href=""> <!-- ADD PROFILE URL -->
                                                     <p>
                                                         <span><i class="fas fa-user"></i></span> {{ blog.author }}
                                                     </p>
                                                 </a>
-                                                <a href="{% url 'blog-details' blog.id %}">
+                                                <a href="{% url 'blog:blog-details' blog.id %}">
                                                     <p>Read More...</p>
                                                 </a>
                                             </div>

@@ -16,8 +16,11 @@ class Blog(models.Model):
     content = models.TextField()
     pub_date = models.DateTimeField('date published', auto_now_add=True,)
     image = models.ImageField(upload_to=MEDIA_ROOT + "blog", blank=True, null=True)
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    tag = models.ManyToManyField(Tag)
     likes = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['-pub_date']
 
     def __str__(self):
         return self.title

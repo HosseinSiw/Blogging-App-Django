@@ -8,14 +8,23 @@ from django.contrib.auth import authenticate, login, logout
 
 def signup_view(request):
     if request.method == 'POST':
+        # print("--" * 100)
+        # print(request.POST)
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, f'Your account has been created ! You are now able to log in')
             return redirect('users:login')
-    else:
+        else:
+            for field, errors in form.errors.items():
+                messages.error(request, f"{field}: {errors}")
+
+    elif request.method == "GET":
         form = UserRegisterForm()
-        return render(request, 'users/signup.html', {'form': form})
+        return render(request, 'users/register.html', {'form': form})
+    else:
+        print("-" * 100)
+        print("OTHERS COMES")
 
 
 def login_view(request):
@@ -27,9 +36,10 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.success(request, f'welcome{username}')
+                messages.success(request, f'welcome {username}')
                 return redirect('home:home')
             else:
+                messages.error(request, message=f"WE Didn't found your account")
                 return redirect('users:signup')
         else:
             return HttpResponse(str(form.errors))

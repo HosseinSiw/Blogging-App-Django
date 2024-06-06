@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{% static 'blog/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'blog/fontawesome/css/all.min.css' %}">
 
-    <title>{{ title }}</title>
+    <title>Registeration</title>
 </head>
 
 <body>
@@ -49,12 +49,6 @@
                         aria-expanded="false">
                         User
                     </a>
-
-                    <ul class="dropdown-menu" aria-labelledby="UserDropdown">
-                        <li><a class="dropdown-item" href="user.html">User</a></li>
-                        <li><a class="dropdown-item" href="login.html">login</a></li>
-                        <li><a class="dropdown-item" href="register.html">regster</a></li>
-                    </ul>
                 </div>
             </ul>
         </div>
@@ -119,37 +113,29 @@
     <div class="pb-5">
         <div class="container d-flex justify-content-center">
             <article class="contact-form">
-                <h3>Login</h3>
-                <p>if you don't have a registered account, you can register <a href="register.html">here!</a></p>
-                <form method="post">
-                    <div class="form-group">
-                        <!-- inputs -->
-                        {% csrf_token %}
+                <h3>Register</h3>
+                <p class="p-3">if you already have an account, please <a href="{% url 'users:login' %}">log in</a>!</p>
+                   <div class="form-group">
+                       <form method="post">
+                           {% csrf_token %}
                         {{ form.as_p }}
-{#                        <button class="btn btn-primary" type="submit">Login</button>#}
-                    </div>
-                    <!-- button -->
-{#                    <p><a href="#">Forgot password?</a> </p>#}
-                    <button type="submit" class="contact-btn btn">login</button>
-                </form>
+                       <button type="submit" class="btn contact-btn">Sign Up</button>
+                       </form>
+                       </div>
+                {% if messages %}
+                    {% for message in messages %}
+
+                        <script>
+                            alert({{ message }});
+                        </script>
+
+                    {% endfor %}
+
+                {% endif %}
             </article>
         </div>
     </div>
 
-    <!-- newsletter -->
-    <section class="section newsletter" id="newsletter">
-        <div class="container section-center newsletter-center">
-            <div class="newsletter-title">
-                <h3>want latest post info and updates?</h3>
-                <p>Sign up for newsletter and stay up to date</p>
-            </div>
-            <form class="newsletter-form">
-                <input type="email" class="form-control" placeholder="your email" />
-                <button type="submit" class="btn">submit</button>
-            </form>
-        </div>
-    </section>
-    <!-- end of newsletter -->
 
     <footer class="footer">
         <ul class="social-icons mt-5">
