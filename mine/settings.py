@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_extensions',
     # 'allauth',               # Allauth extension
     # 'allauth.account',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [

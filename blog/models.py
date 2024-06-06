@@ -25,8 +25,21 @@ class Blog(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return f'/blog/blogs/{self.id}'
+
     def add_like(self):
         self.likes += 1
+
+
+class Comment(models.Model):
+    title = models.CharField(max_length=60, null=False)
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='comments')
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    date_posted = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title + ' on ' + self.title[:10]
 
 
 class Contact(models.Model):

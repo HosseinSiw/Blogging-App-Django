@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Blog, Tag, Contact
+from .models import Blog, Tag, Contact, Comment
 
 
 class BlogAdmin(admin.ModelAdmin):
@@ -19,3 +19,8 @@ class ContactAdmin(admin.ModelAdmin):
 admin.site.register(Blog, BlogAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Contact)
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('title', 'author', 'blog')
